@@ -152,8 +152,8 @@ def convert_operations(onnx_graph, opset_version, batch_dim=0, enable_pruning=Tr
         elif node.op_type == "MatMul":
             if params:
                 weight = torch.from_numpy(numpy_helper.to_array(params[0]))
-                op = nn.Linear(weight.shape[0], weight.shape[1], bias=False)
-                op.weight.data = weight.t()
+                op = nn.Linear(weight.shape[1], weight.shape[0], bias=False)
+                op.weight.data = weight
 
                 # check if next node Add to add bias
                 next_node = onnx_graph.node[i + 1]
